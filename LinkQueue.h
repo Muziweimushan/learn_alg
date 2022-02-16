@@ -51,7 +51,7 @@ public:
 		}
 		else
 		{
-			THROW_EXCEPTION(InvalidOperationException, "No mem to insert new LinkQueue element...");
+			THROW_EXCEPTION(NoEnoughMemoryException, "No mem to insert new LinkQueue element...");
 		}
 	}
 
@@ -179,7 +179,10 @@ public:
 		clear();
 	}
 
-
+private:
+    /*禁用copy constructor和 assignment operator*/
+    LinkQueue(const LinkQueue<T> &);
+    LinkQueue<T> &operator = (const LinkQueue<T> &);
 };
 
 }

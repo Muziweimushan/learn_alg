@@ -32,3 +32,5 @@
 *.app
 
 *.swp
+
+.ccls-cache
