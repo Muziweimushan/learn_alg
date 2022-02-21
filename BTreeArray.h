@@ -112,16 +112,12 @@ public:
             mark[i] = false;
 
         len = (len < length()) ? len : length();
-        std::cout << "new length = " << len << std::endl;
 
         for (int i = 1; i <= len; i++)
         {
             mark[i] = m_mark[i];
             if (mark[i])
-            {
-                std::cout << "..." << std::endl; 
                 value[i] = m_value[i];
-            }
         }
 
         m_value = value;
