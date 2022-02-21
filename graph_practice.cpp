@@ -151,7 +151,7 @@ void solution(void)
     MyLib::StaticArray<bool, ROW * COL> discovered;
 
     /*思路:分别从各个值为0的顶点出发,其前后左右4个方向的顶点如果值为0,则距离为1,再分别从这4个当中值不为0的顶点出发,依次类推,迭代到4个方向的顶点值都不为0就可以返回了*/
-    /*整个算法类似于BFS,或者说二叉树的层次遍历更形象一点,一层一层向下走,layer[i] = layer[i - 1]*/
+    /*整个算法类似于BFS,或者说二叉树的层次遍历更形象一点,从距离为0的点出发,一层一层向下走,layer[i] = layer[i - 1]*/
 
     int dist[ROW * COL];
 
@@ -213,7 +213,7 @@ void solution(void)
 }
 
 
-int main(void)
+void graph_practice(void)
 {
     std::cout << Exercise_1::solution() << std::endl;
 
@@ -221,5 +221,4 @@ int main(void)
     //
     Exercise_2::solution();
 
-    return 0;
 }

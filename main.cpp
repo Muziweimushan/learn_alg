@@ -198,9 +198,10 @@ void printDualList(BTreeNode<T>* node)
 
 #include "RangeArray.h"
 
-static void my_test1(const RangeArray<int> &ra)
+static void my_test1(const MyLib::RangeArray<int> &ra)
 {
     //ra[2] = 22;
+    (void)ra;
 }
 
 #include "ListGraph.h"
@@ -288,8 +289,15 @@ void MatrixGraphDemo()
     cout << "distance: " << d << endl;
 }
 
+extern void graph_practice(void);
+extern void testBTreeArray(void);
+
+
 int main()
 {
+    //graph_practice();
+    testBTreeArray();
+#if 0
     try
     {
         RangeArray<int> ra(-1, 5);
@@ -312,6 +320,7 @@ int main()
 
     MatrixGraphDemo();
     //test_graph();
+#endif
     return 0;
 }
 

@@ -74,6 +74,8 @@ public:
                 THROW_EXCEPTION(NoEnoughMemoryException, "No enough memory to create RangeArray object ...");
             } 
         }
+
+        return *this;
     }
 
     bool set(int i, const T &e)
@@ -81,7 +83,7 @@ public:
         return Array<T>::set(i - m_lower, e);
     }
 
-    bool get(int i, T &e)
+    bool get(int i, T &e) const
     {
         return Array<T>::get(i - m_lower, e); 
     }

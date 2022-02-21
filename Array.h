@@ -28,7 +28,7 @@ public:
 		return ret;
 	}
 
-	virtual bool get(int i, T &e)				//O(1)
+	virtual bool get(int i, T &e) const				//O(1)
 	{
 		bool ret = ((0 <= i) && (i < length()));
 
