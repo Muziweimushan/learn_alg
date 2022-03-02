@@ -1,0 +1,7 @@
+
+g++ -std=c++11 *.cpp -g3 -O0 -W{all,pedantic,extra,no-unused-function}
+
+
+valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all  ./a.out
+
+

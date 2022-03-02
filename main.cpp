@@ -293,11 +293,15 @@ extern void graph_practice(void);
 extern void testBTreeArray(void);
 extern void test_heap(void);
 
+extern void recursion_exercise1(void);
+
 int main()
 {
     //graph_practice();
     //testBTreeArray();
-    test_heap();
+    //test_heap();
+    //
+    recursion_exercise1();
 #if 0
     try
     {

@@ -204,12 +204,10 @@ static void test2(void)
     std::cout << isSym("acda") << std::endl;
 }
 
-int main(void)
+void test_graph_deque(void)
 {
     //test1();
     //test_deque();
     //
     test2();
-
-    return 0;
 }
