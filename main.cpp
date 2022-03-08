@@ -294,6 +294,8 @@ extern void testBTreeArray(void);
 extern void test_heap(void);
 
 extern void recursion_exercise1(void);
+extern void recursion_exercise2(void);
+extern void recursion_exercise3(void);
 
 int main()
 {
@@ -301,7 +303,9 @@ int main()
     //testBTreeArray();
     //test_heap();
     //
-    recursion_exercise1();
+    //recursion_exercise1();
+    //recursion_exercise2();
+    recursion_exercise3();
 #if 0
     try
     {

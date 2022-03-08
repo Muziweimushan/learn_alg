@@ -8,6 +8,7 @@ bool toHeap(MyLib::BTreeArray<int> &arr)
 {
     bool ret = true;
 
+    /*因为这里是将顺序二叉树当作数组来使用,因此不能保证这个二叉树是满足完全二叉树的要求*/
     try
     {
 
