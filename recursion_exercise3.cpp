@@ -134,6 +134,23 @@ void findIdxNum(int a[], int lo, int hi, int k, int &n, int &n1, bool find_k, bo
 
 int FindMid(int a[], int n)
 {
+    int k = 0;      /*k*/
+    int k1 = 0;     /*k-1*/
+
+    findIdxNum(a, 0, n, (n >> 1), k, k1, false, false);
+
+    if (n & 1)
+    {
+        /*n为奇数*/
+        std::cout << "median = " << k << std::endl;
+    }
+    else
+    {
+        int median = ((k + k1) >> 1);
+        std::cout << "median = " << median << std::endl;
+    }
+
+
     return 0;
 }
 
@@ -168,4 +185,8 @@ void recursion_exercise3(void)
         std::cout << "integer string = " << n1 << std::endl; 
     else
         std::cout << "is not a integer string ..." << std::endl;
+
+
+    int a[] = {1, 2, 3};
+    FindMid(a, 3);
 }
