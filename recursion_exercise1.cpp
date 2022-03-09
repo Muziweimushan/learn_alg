@@ -134,6 +134,7 @@ void duplicate(ListHead *list)
     duplicate(cur->next);
 }
 
+/*问题5:删除无序链表中的重复节点*/
 void list_duplicate(ListHead *list)
 {
     duplicate(list);
@@ -148,6 +149,190 @@ void print_and_delete_list(ListHead *head)
         head = head->next;
         delete toDel, toDel = NULL;
     }
+}
+
+
+struct Node
+{
+    int value;
+    Node *next;
+};
+
+/*问题6:在无头单链表中删除指定值x的节点*/
+void rmdup(Node *&head, int v)
+{
+    if (nullptr == head)
+        return;
+
+    if (v == head->value)
+    {
+        /*需要删除*/
+        Node *toDel = head;
+        head = head->next;
+        delete toDel, toDel = nullptr;
+        rmdup(head, v);
+    }
+    else
+    {
+        rmdup(head->next, v);
+    }
+}
+
+void rmdup_iter(Node *&head, int v)
+{
+    /*搞个假的头节点*/
+    Node fake_head;
+
+    fake_head.next = head;
+
+    Node *cur = &fake_head;     /*当前处理节点初始化为假的头节点*/
+    Node *next = fake_head.next;    /*检查的其实是next节点,初始化为head*/
+
+    /*以cur的next为循环条件*/
+    while (next)
+    {
+        if (v != next->value)
+        {
+            /*不相等不需要删除,同时后移*/
+            cur = cur->next;
+            next = next->next;
+            continue;
+        }
+        
+        /*要删除的节点是next,删除前需要构建cur与删除节点的next指针的关系,即 cur->next = next->next*/ 
+        Node *toDel = next;
+        cur->next = next->next;
+        next = next->next;
+
+        delete toDel, toDel = nullptr;
+    }
+
+    /*最后将head拿回来返回就OK,如果head不是引用的话就需要在这里返回fake_head.next作为删除后的链表首节点*/
+    head = fake_head.next;
+}
+
+namespace check_exer6
+{
+
+void print_list(Node *head, bool need_free = true)
+{
+    while (head)
+    {
+        std::cout << head->value << "  ";
+        Node *toDel = head;
+        head = head->next;
+        if (need_free)
+            delete toDel, toDel = NULL;
+    }
+
+    std::cout << std::endl;
+}
+
+void check(void)
+{
+
+    Node *head = new Node;
+    //int c[] = {5, 2, 1, 1, 6, 5, 4, 13, 1, 11, 23, 2, 56};
+    int c[] = {1, 4, -1, 22, 33, -2, 5, 8, 2, 2, 2, 4, 5, 6, 6, 6, 77, 8,-1};
+    //int c[] = {1};
+    Node* cur = head;
+    head->next = NULL;
+    head->value = c[0];
+    int len = sizeof(c) / sizeof(*c);
+    for (int i = 1; i < len; i++)
+    {
+        Node *item = new Node;
+        item->next = NULL;
+        item->value = c[i];
+        cur->next = item;
+        cur = cur->next;
+    }
+
+    int todel = 6;
+    std::cout << "we are goint to remove elem " << todel << " in list ..." << std::endl;
+    std::cout << "origin list :" << std::endl;
+    print_list(head, false);
+
+    rmdup_iter(head, todel);
+    //rmdup(head, todel);
+    std::cout << "after remove : list = " << std::endl;
+    print_list(head);
+}
+
+}
+
+
+static int average(int *a, int n, int idx, int &rem)
+{
+    if (idx >= n)
+        return 0;
+
+    int quo = a[idx] / n;   /*quotient,商*/
+    rem += a[idx] % n;      /*remainder,余数*/
+    quo += rem / n;
+    rem = rem % n;
+
+    return quo + average(a, n, idx + 1, rem);
+}
+
+/*
+ * 问题7:求n个数的平均等价于求 a0 /n + a1 /n + ... an-1 / n
+ * 除法会有余数,将所有的余数加起来再除n就能补回来
+ * 
+ * PS:这里的入参rem是不需要的,只是为了测试用而已
+ */
+int average(int *a, int n, int &rem)
+{
+    //int rem = 0
+    return average(a, n, 0, rem = 0);
+}
+
+
+namespace check_exer7
+{
+#include <time.h>
+#include <cstdlib>
+
+static inline uint64_t get_sum(int *a, unsigned int length)
+{
+    uint64_t sum = 0;
+
+    for (unsigned int i = 0; i < length; i++)
+        sum += a[i];
+
+    return sum;
+}
+
+void check(void)
+{
+    ::srand(::time(NULL));
+
+    unsigned int length = rand() % 100000;//20000000;  /*数据量太大递归会栈溢出...*/
+    int *a = new int[length];
+    if (nullptr == a)
+    {
+        std::cout << "no memory ..." << std::endl;
+        return;
+    }
+
+    for (uint32_t i = 0; i < length; i++)
+        a[i] = rand();
+
+    uint64_t sum = get_sum(a, length);
+    
+    int rem = 0;
+    int avg = average(a, length, rem);
+    std::cout << "average = " << avg  << std::endl;
+    
+    uint64_t check_sum = (uint64_t)avg * length + rem;
+
+    if (sum != check_sum)
+        std::cout << "check failed ..." << std::endl;
+    else
+        std::cout << "check success ..." << std::endl;
+
+    delete[] a;
+}
 }
 
 void recursion_exercise1(void)
@@ -215,4 +400,18 @@ void recursion_exercise1(void)
     list_duplicate(head);
 
     print_and_delete_list(head);
+
+    std::cout << "End exercise 5 ..." << std::endl << std::endl << std::endl << std::endl << std::endl;
+
+    std::cout << "**********************Run exercise 6 ************" << std::endl;
+
+    check_exer6::check();
+    std::cout << "**********************End exercise 6 ************" << std::endl << std::endl << std::endl << std::endl << std::endl;
+
+
+
+    std::cout << "**********************Run exercise 7 ************" << std::endl;
+
+    check_exer7::check();
+    std::cout << "**********************End exercise 7 ************" << std::endl << std::endl << std::endl << std::endl << std::endl;
 }
