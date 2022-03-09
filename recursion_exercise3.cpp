@@ -152,6 +152,44 @@ int FindMid(int a[], int n)
 }
 
 
+
+class MaxPathSum
+{
+public:
+    MaxPathSum()
+        : sum(INT_MIN)
+    {
+    }
+
+    
+    int solve(MyLib::BTree<int> &tree);
+private:
+    int sum;
+
+};
+
+MyLib::LinkList<int> solution;
+static int g_max_sum = INT_MIN;
+
+static bool update(int curMax, MyLib::LinkList<int> &queue)
+{
+    bool ret = false;
+
+    if (curMax > g_max_sum)
+    {
+        ret = true;
+        g_max_sum = curMax;
+
+
+        solution.clear();
+    
+        for (queue.move(0); !queue.end(); queue.next())
+            solution.insert(queue.current());
+    }
+
+    return ret;
+}
+
 /*问题4:查找并打印二叉树中的最大路径(路径上结点和最大)*/
 /*
  * 思路:最大路径一共有几种情况
@@ -166,16 +204,157 @@ int FindMid(int a[], int n)
  *  对于这三种情况单独比较,如果满足条件就更新到全局的答案里边
  *
  */
-
-int maxPathSum(MyLib::)
-
-int maxPathSum(MyLib::BTreeNode<int> *root)
+int maxPathSum(MyLib::BTreeNode<int> *root, MyLib::LinkList<int> &queue)
 {
     if (nullptr == root)
         return INT_MIN;
 
+    MyLib::LinkList<int> leftQueue;
+    MyLib::LinkList<int> rightQueue;
+    int maxLeft;
+    int maxRight;
+    int ret = INT_MIN;
+
+    if (root->left)
+        maxLeft = maxPathSum(root->left, leftQueue); 
+    else
+        maxLeft = INT_MIN;
+
+    if (root->right)
+        maxRight = maxPathSum(root->right, rightQueue); 
+    else
+        maxRight = INT_MIN;
+
+    int curSum = root->value;
+    /*接下来开始处理各种情况*/
+
+    /*TODO:我们是否能分成两大类来处理,就是能作为子问题的解和不能作为子问题的解来处理*/
+    std::cout << "max left = " << maxLeft << std::endl;
+    std::cout << "max right = " << maxRight << std::endl;
+    std::cout << "cur sum = " << curSum << std::endl;
+
+    /*左右子树的结果加上当前根节点的值变小了,不要左右子树,包含了左右子树是空的情况*/
+    if (curSum > (curSum + maxLeft) && curSum > (curSum + maxRight))
+    {
+        std::cout << "use root only as sub-result ..." << std::endl;
+        /*它是可以作为递归的返回结果的*/
+        queue.insert(root->value);
+        //sum += root->value;
+
+        ret = root->value;
+    }
+    
+    if (maxLeft <= 0 && maxRight <= 0)
+    {
+        /*如果子树的结果是小于0的,那么它肯定不作为子问题的解了,因为root+maxLeft必然小于root,所以肯定从root开始而不会从左子树开始*/
+        /*但是当前结果可以作为最后的解*/
+        if (maxLeft > maxRight)    /*统一用左边的*/
+        {
+            std::cout << "use left sub-tree as one solve ..." << std::endl;
+            update(maxLeft, leftQueue);
+        }
+        else if (maxRight > INT_MIN)
+        {
+            std::cout << "use left sub-tree as one solve ..." << std::endl;
+            update(maxRight, rightQueue);
+        }
+        //else ;   /*两个都是INT_MIN*/
+    }
+    
+    if (curSum + maxLeft > curSum || curSum + maxRight > curSum)
+    {
+        std::cout << "here" << std::endl;
+        /*这种是可以作为子问题解的情况*/
+        if (maxLeft > maxRight)
+        {
+            std::cout << "use left tree ..." << std::endl;
+            /*局部解为 左子树->root*/
+            for (leftQueue.move(0); !leftQueue.end(); leftQueue.next())
+                queue.insert(leftQueue.current());
+
+            queue.insert(root->value);
+
+            //sum += (maxLeft + curSum);
+            ret = maxLeft + curSum;
+        }
+        else
+        {
+            std::cout << "use right tree ..." << std::endl;
+            /*局部解为 左子树->root*/
+            for (rightQueue.move(0); !rightQueue.end(); rightQueue.next())
+                queue.insert(rightQueue.current());
+
+            queue.insert(root->value);
+
+            //sum += (maxRight + curSum);
+            ret = maxRight + curSum;
+        }
+    }
+
+    if (maxLeft > 0 && maxRight > 0)
+    {
+        std::cout << "find one solve ..." << std::endl;
+        /*可以作为问题的一个最终解*/
+        /*左子树->root->右子树*/
+        MyLib::LinkList<int> ans;
+
+        for (leftQueue.move(0); !leftQueue.end(); leftQueue.next())
+            ans.insert(leftQueue.current());
+
+        ans.insert(root->value);
+
+        for (rightQueue.move(0); !rightQueue.end(); rightQueue.next())
+            queue.insert(rightQueue.current());
+
+        update(curSum + maxLeft + maxRight, ans);
+    }
+
+    return ret;
+}
+
+int maxPathSum(MyLib::BTreeNode<int> *root)
+{
+    MyLib::LinkList<int> queue;
+
+    int sum = maxPathSum(root, queue);
+    std::cout << "queue length = " << queue.length() << std::endl;
+    if (sum > g_max_sum)
+    {
+        for (queue.move(0); !queue.end(); queue.next())
+            std::cout << queue.current() << std::endl;
+    }
+    else
+    {
+        for (solution.move(0); !solution.end(); solution.next())
+            std::cout << solution.current() << std::endl;
+    }
+
+    std::cout << "sum = " << sum << std::endl;
 
     return 0;
+}
+
+void set_tree(MyLib::BTree<int> &tree)
+{
+    tree.insert(1, NULL);
+
+    MyLib::BTreeNode<int> *root = tree.root();
+
+    tree.insert(3, root, MyLib::LEFT);
+
+    MyLib::BTreeNode<int> *l1 = root->left;
+
+    tree.insert(-1, l1, MyLib::RIGHT);
+    tree.insert(9, l1, MyLib::LEFT);
+}
+
+static void test_maxpathsum(void)
+{
+    MyLib::BTree<int> tree;
+
+    set_tree(tree);
+
+    maxPathSum(tree.root());
 }
 
 
@@ -200,4 +379,7 @@ void recursion_exercise3(void)
 
     int a[] = {1, 4, 3, 4};
     FindMid(a, sizeof(a) / sizeof(*a));
+
+
+    test_maxpathsum();
 }
