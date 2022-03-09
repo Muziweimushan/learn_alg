@@ -73,13 +73,65 @@ bool isIntStr(const char *s, int &n)
 /*问题3:在不排序的前提下,求数组的中位数*/
 /*
  *中位数的计算公式:
- *  当N为奇数,m = a[n + 1 / 2]
- *  当N为偶数,m = (a[n / 2] + a[n / 2 + 1]) / 2
+ *  当N为奇数,m = a[n / 2],比如0 1 2就需要1 == (3 / 2)
+ *  当N为偶数,m = (a[n / 2] + a[n / 2 - 1]) / 2, 比如 0 1 2 3,就需要 1跟2
  *
- * 从排序的角度看,中位数就是排序后的数组中最中间的数
- * 也就是 对于已经排好序的数组来说,中位数mid必然大于等于它的前驱
- * 同时mid也必然小于等于它的所有后继
+ * 思路:类似快速排序的partition方法,每次都能从partition中找到一个就位的元素,我们只需要判断partition返回的就位元素的下标是否满足要求,如果不满足则继续调用partition就可以了
+ * 我们需要的下标应当是 idx = n / 2, 这个不管数组长度是奇数还是偶数都需要,此外偶数还需要下标为 (n/2) - 1的
  * */
+
+/*邓公的数据结构书里边的版本C partition*/
+static int partition(int a[], int lo, int hi)
+{
+   //swap (a[lo], a[ lo + rand() % ( hi - lo ) ] ); //任选一个元素与首元素交换
+   int pivot = a[lo];
+   int mi = lo;
+
+   for (int k = lo + 1; k < hi; k++)
+      if (a[k] < pivot)
+         swap (a[++mi], a[k] );
+
+   swap (a[lo], a[mi]);
+
+   return mi;
+}
+
+/*此处实现功能函数,从[lo, hi)中查找排序后下标为k和k-1的值分别存入n和 n1*/
+void findIdxNum(int a[], int lo, int hi, int k, int &n, int &n1, bool find_k, bool find_k1)
+{
+    /*递归基,没有元素了*/
+    if (lo >= hi)
+        return;
+
+    /*首先调用partition找轴点*/
+    int pivot = partition(a, lo, hi);
+
+    /*看一下是否为k或者k-1*/
+    if (k == pivot)
+    {
+        n = a[pivot];
+        find_k = true;
+        /*如果第k-1个数也找到了,就可以返回*/
+        if (find_k1)
+            return;
+    }
+    else if (k - 1 == pivot)
+    {
+        n1 = a[pivot];
+        find_k1 = true;
+        /*如果第k个数也找到了,就可以返回*/
+        if (find_k)
+            return;
+    }
+
+    /*还没找完2个数,那就在pivot的一侧递归找*/
+    if (pivot >= k)
+        findIdxNum(a, lo, pivot, k, n, n1, find_k, find_k1);    /*在轴点的左边找*/
+    else
+        findIdxNum(a, pivot + 1, hi, k, n, n1, find_k, find_k1);
+
+}
+
 int FindMid(int a[], int n)
 {
     return 0;

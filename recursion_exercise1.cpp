@@ -253,8 +253,8 @@ void check(void)
     std::cout << "origin list :" << std::endl;
     print_list(head, false);
 
-    rmdup_iter(head, todel);
-    //rmdup(head, todel);
+    //rmdup_iter(head, todel);
+    rmdup(head, todel);
     std::cout << "after remove : list = " << std::endl;
     print_list(head);
 }

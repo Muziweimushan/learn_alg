@@ -117,8 +117,7 @@ private:
 
 		}
 
-		//我认为这里不需要将pv填到begin指向的位置啊
-		//array[begin] = pv;
+		array[begin] = pv;
 		//
 		return begin;
 	}
