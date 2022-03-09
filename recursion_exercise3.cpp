@@ -136,35 +136,46 @@ int FindMid(int a[], int n)
 {
     int k = 0;      /*k*/
     int k1 = 0;     /*k-1*/
+    int ret = INT_MIN;
 
     findIdxNum(a, 0, n, (n >> 1), k, k1, false, false);
 
     if (n & 1)
-    {
         /*n为奇数*/
-        std::cout << "median = " << k << std::endl;
-    }
+        ret = k;
     else
-    {
-        int median = ((k + k1) >> 1);
-        std::cout << "median = " << median << std::endl;
-    }
+        ret = ((k + k1) >> 1);
 
+    std::cout << "median = " << ret << std::endl;
 
-    return 0;
+    return ret;
 }
 
 
 /*问题4:查找并打印二叉树中的最大路径(路径上结点和最大)*/
 /*
+ * 思路:最大路径一共有几种情况
+ *  a.只有一个根结点(它的左右孩子为根子树的最大路径和都是负的而根结点是正)
+ *  b.位于根结点的左子树中,不包括根结点
+ *  c.位于...右子树
+ *  d.左子树->根结点
+ *  e.右子树->根结点
+ *  f.左子树->根结点->右子树
  *
+ *  对于递归来说(也就是当前结点的结果可以通过拿它的左或者右子树的结果计算得到),情况b c f都是不能作为递归的返回结果的,因为这些结果不能被它的母问题使用
+ *  对于这三种情况单独比较,如果满足条件就更新到全局的答案里边
  *
  */
+
+int maxPathSum(MyLib::)
 
 int maxPathSum(MyLib::BTreeNode<int> *root)
 {
     if (nullptr == root)
         return INT_MIN;
+
+
+    return 0;
 }
 
 
@@ -187,6 +198,6 @@ void recursion_exercise3(void)
         std::cout << "is not a integer string ..." << std::endl;
 
 
-    int a[] = {1, 2, 3};
-    FindMid(a, 3);
+    int a[] = {1, 4, 3, 4};
+    FindMid(a, sizeof(a) / sizeof(*a));
 }
