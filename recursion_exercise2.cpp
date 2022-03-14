@@ -277,7 +277,7 @@ int maxPathSum(BTreeNode<int> *root, LinkList<int> &queue)
                 for (rightQueue.move(0); !rightQueue.end(); rightQueue.next())
                     tmp.insert(rightQueue.current());
 
-                update(left_r_right, tmp);
+                //update(left_r_right, tmp);
             }
         }
         else if (maxRight > maxLeft)
@@ -330,7 +330,7 @@ int BTreeMaxPathSum(BTreeNode<int> *root)
     return g_max_sum;
 }
 
-#define TEST_CASE (5)
+#define TEST_CASE (2)
 
 void set_tree(BTree<int> &tree)
 {
