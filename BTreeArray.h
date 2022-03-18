@@ -17,7 +17,7 @@ public:
         m_mark(m_value.lower(), m_value.upper()),
         m_height(height)
     {
-        this->m_array = NULL;
+        this->m_array = nullptr;
         for (int i = m_mark.lower(); i <= m_mark.upper(); i++) 
            m_mark[i] = false; 
     }
