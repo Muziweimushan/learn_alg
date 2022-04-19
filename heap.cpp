@@ -8,7 +8,7 @@ bool toHeap(MyLib::BTreeArray<int> &arr)
 {
     bool ret = true;
 
-    /*因为这里是将顺序二叉树当作数组来使用,因此不能保证这个二叉树是满足完全二叉树的要求*/
+    /*因为一棵顺序结构二叉树不一定是完全二叉树,所以下面操作不一定都是合法,因此需要try catch*/
     try
     {
 
@@ -100,7 +100,7 @@ void test_heap(void)
     for (uint32_t i = 1, j = 0; j < sizeof(a) / sizeof(*a); j++, i++)
         arr.set(i, a[j]);
 
-    if (1)//(toHeap(arr))
+    if (toHeap(arr))
     {
         if (isHeap(arr))
             for (int i = 1; i <= arr.count(); i++)

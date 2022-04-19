@@ -301,11 +301,11 @@ int main()
 {
     //graph_practice();
     //testBTreeArray();
-    //test_heap();
+    test_heap();
     //
     //recursion_exercise1();
     //recursion_exercise2();
-    recursion_exercise3();
+    //recursion_exercise3();
 #if 0
     try
     {
