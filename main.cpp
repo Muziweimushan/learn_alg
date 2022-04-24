@@ -1,7 +1,8 @@
 #include <iostream>
 #include "BTreeNode.h"
 #include "MatrixGraph.h"
-#include "Heap.h"
+#include "StaticHeap.h"
+#include "DynamicHeap.h"
 
 using namespace std;
 using namespace MyLib;
@@ -298,11 +299,33 @@ extern void recursion_exercise1(void);
 extern void recursion_exercise2(void);
 extern void recursion_exercise3(void);
 
+namespace TestStaticHeap
+{
+    void check(void)
+    {
+        MyLib::DynamicHeap<int> heap(10);
+
+        int a[] = {2, 4, 1, 3, 5};
+
+        for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
+            heap.add(a[i]);
+
+        while (heap.length())
+        {
+            std::cout << heap.front() << std::endl;
+            heap.remove();
+        }
+
+    }
+}
+
 int main()
 {
     //graph_practice();
     //testBTreeArray();
-    test_heap();
+    //test_heap();
+
+    TestStaticHeap::check(); 
     //
     //recursion_exercise1();
     //recursion_exercise2();
@@ -332,7 +355,6 @@ int main()
     //test_graph();
 #endif
 
-    MyLib::Heap<int> heap(true);
     return 0;
 }
 
