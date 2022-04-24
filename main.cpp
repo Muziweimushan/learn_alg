@@ -1,6 +1,7 @@
 #include <iostream>
 #include "BTreeNode.h"
 #include "MatrixGraph.h"
+#include "Heap.h"
 
 using namespace std;
 using namespace MyLib;
@@ -330,6 +331,8 @@ int main()
     MatrixGraphDemo();
     //test_graph();
 #endif
+
+    MyLib::Heap<int> heap(true);
     return 0;
 }
 

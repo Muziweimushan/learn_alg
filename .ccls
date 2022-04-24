@@ -7,23 +7,26 @@
 -g3
 -O0
 
--isystem
-/usr/include/c++/7
+ -isystem
+ /home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/x86_64-pc-linux-gnu/11/../../../../../../include/c++/11
+
+ -isystem
+/home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/x86_64-pc-linux-gnu/11/../../../../../../include/c++/11/x86_64-pc-linux-gnu
 
 -isystem
-/usr/include/x86_64-linux-gnu/c++/7
+/home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/x86_64-pc-linux-gnu/11/../../../../../../include/c++/11/backward
 
 -isystem
-/usr/include/c++/7/backward
+/home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/x86_64-pc-linux-gnu/11/include
 
 -isystem
-/usr/lib/gcc/x86_64-linux-gnu/7/include
+/home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/x86_64-pc-linux-gnu/11/include-fixed
 
 -isystem
-/usr/local/include
+/home/linuxbrew/.linuxbrew/Homebrew/Cellar/gcc/11.2.0_3/bin/../lib/gcc/11/gcc/../../../../include
 
 -isystem
-/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed
+/home/linuxbrew/.linuxbrew/Homebrew/include
 
 -isystem
 /usr/include/x86_64-linux-gnu

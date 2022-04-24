@@ -4,8 +4,6 @@
 #include "MyString.h"
 #include "LinkList.h"
 
-using namespace MyLib;
-
 bool isContained(int a[], int pos, int end, const int x)
 {
     if (pos == end)
@@ -68,7 +66,7 @@ int MaxInArray(int a[], int n)
  * 对于个数n个的集合,它的子集就是set[n-1] 依次加上 前n-1个的集合的子集(或者说由第0个依次加上后面n-1个组成的子集)
  * 注意这里的str需要先去重
  * */
-void subst(String &str, LinkList<String> &res)
+void subst(MyLib::String &str, MyLib::LinkList<MyLib::String> &res)
 {
     if (0 == str.length())
     {
@@ -77,10 +75,10 @@ void subst(String &str, LinkList<String> &res)
     }
     
     /*拿出来第一个*/
-    String head = str[0];
+    MyLib::String head = str[0];
     subst(str.remove(0, 1), res);   /*求剩下的n-1个集合的所有子集*/
 
-    LinkList<String> tmp;
+    MyLib::LinkList<MyLib::String> tmp;
     for (res.move(0); !res.end(); res.next())
         tmp.insert(0, head + res.current());
 
@@ -88,7 +86,7 @@ void subst(String &str, LinkList<String> &res)
         res.insert(0, tmp.current());
 }
 
-static void print_subst(String str)
+static void print_subst(MyLib::String str)
 {
     std::cout << "{";
     for (int i = 0; i < str.length(); i++)
@@ -367,8 +365,8 @@ void recursion_exercise1(void)
 
 
     std::cout << "Run exercise 4 ..." << std::endl;
-    LinkList<String> res;
-    String str = "abcehg";
+    MyLib::LinkList<MyLib::String> res;
+    MyLib::String str = "abcehg";
     /*TODO:要对str先做去重*/
     subst(str, res);
 
