@@ -110,7 +110,6 @@ public:
 private:
     int m_upper;    /*上界*/
     int m_lower;    /*下界*/
-
 };
 
 }

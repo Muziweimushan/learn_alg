@@ -31,4 +31,4 @@
 -isystem
 /usr/include
 
--fexceptions
+-fcxx-exceptions
