@@ -1,7 +1,11 @@
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 #include "./BTreeArray.h"
+#include "DynamicHeap.h"
+#include "StaticHeap.h"
+#include "Sort.h"
 
 
 bool toHeap(MyLib::BTreeArray<int> &arr)
@@ -91,25 +95,72 @@ bool isHeap(MyLib::BTreeArray<int> &bt, int i = 1)
     return ret;
 }
 
+namespace TestHeap
+{
+    enum { TEST_ARRAY_LEN = 10000 };
+    void check(void)
+    {
+        MyLib::DynamicHeap<int> heap(10);
+
+        int a[] = {2, 4, 1, 3, 5};
+
+        for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
+            heap.add(a[i]);
+
+        while (heap.length())
+        {
+            std::cout << heap.front() << std::endl;
+            heap.remove();
+        }
+
+
+        srand(time(NULL));
+        int len = ::rand() % TEST_ARRAY_LEN;
+        if (!len)
+            len = TEST_ARRAY_LEN;
+
+        int *array = new int[len];
+        for (int i = 0; i < len; i++)
+            array[i] = rand();
+
+        MyLib::Sort::Heap<int>(array, len, true);
+
+        for (int i = 0; i < len; i++)
+            std::cout << i << std::endl;
+
+        delete [] array, array = nullptr;
+    }
+}
+
+namespace TestToHeap
+{
+
+    void check(void)
+    {
+        int a[] = {1, 2, 6, 4, 5, 3};
+        MyLib::BTreeArray<int> arr(std::log2(sizeof(a) / sizeof(*a)) + 1);
+
+        for (uint32_t i = 1, j = 0; j < sizeof(a) / sizeof(*a); j++, i++)
+            arr.set(i, a[j]);
+
+        if (toHeap(arr))
+        {
+            if (isHeap(arr))
+                for (int i = 1; i <= arr.count(); i++)
+                    std::cout << arr[i] << std::endl;
+            else
+                std::cout << "not a heap ..." << std::endl;
+        }
+        else
+        {
+            std::cout << "to heap failed ..." << std::endl;
+        }
+    }
+}
 
 void test_heap(void)
 {
-    int a[] = {1, 2, 6, 4, 5, 3};
-    MyLib::BTreeArray<int> arr(log2(sizeof(a) / sizeof(*a)) + 1);
+    //TestToHeap::check();
 
-    for (uint32_t i = 1, j = 0; j < sizeof(a) / sizeof(*a); j++, i++)
-        arr.set(i, a[j]);
-
-    if (toHeap(arr))
-    {
-        if (isHeap(arr))
-            for (int i = 1; i <= arr.count(); i++)
-                std::cout << arr[i] << std::endl;
-        else
-            std::cout << "not a heap ..." << std::endl;
-    }
-    else
-    {
-        std::cout << "to heap failed ..." << std::endl;
-    }
+    TestHeap::check();
 }

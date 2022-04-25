@@ -4,6 +4,7 @@
 #define __DYNAMICHEAP_H__
 
 #include "DynamicArray.h"
+#include "Heap.h"
 
 namespace MyLib
 {

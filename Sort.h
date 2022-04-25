@@ -3,6 +3,8 @@
 
 #include "Object.h"
 #include "Array.h"
+#include "DynamicHeap.h"
+
 namespace MyLib
 {
 
@@ -283,6 +285,23 @@ public:
 		Quick(array, 0, len - 1, min2max);
 	}
 
+    /*堆排序*/
+	template < typename T >
+	static void Heap(T array[], int len, bool min2max = true)
+	{
+        /*注意这里isMax参数的设置,isMax表示是最大堆,也就是从大到小排列*/
+	    DynamicHeap<T> heap(len, !min2max);
+
+        for (int i = 0; i < len; i++)
+            heap.add(array[i]);
+
+        for (int i = 0; i < len; i++)
+        {
+            array[i] = heap.front();
+            heap.remove();
+        }
+	}
+
 	template < typename T >
 	static void Select(Array<T> &array, bool min2max = true)
 	{
@@ -318,7 +337,12 @@ public:
 	{
 		Quick(array.array(), array.length(), min2max);
 	}
-
+    
+    template < typename T >
+    static void Heap(Array<T> &array, bool min2max = true)
+    {
+        Heap(array.array(), array.length(), min2max);
+    }
 };
 
 }

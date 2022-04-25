@@ -19,7 +19,7 @@ public:
         m_length = 0;
     }
 
-    void add(const T &e)
+    void add(const T &e)    /*O(logn)*/
     {
         int i = length() + 1;   /*完全二叉树对树节点编号从1开始*/
 
@@ -51,7 +51,7 @@ public:
         if (length() <= 0)
             THROW_EXCEPTION(InvalidOperationException, "Heap is empty ...");
 
-        /*从堆中取走队列头也就是将位置为1的元素从队列中拿掉,此时需要重建堆,方法是将堆中最后一个元素移到堆的头部,并从这个元素开始自顶向下的做一次toHeap函数一次for循环的重建即可,可见这里的移动是线性的,而且复杂度为O(lnh)*/
+        /*从堆中取走队列头也就是将位置为1的元素从队列中拿掉,此时需要重建堆,方法是将堆中最后一个元素移到堆的头部,并从这个元素开始自顶向下的做一次toHeap函数一次for循环的重建即可,可见这里的移动是线性的,而且复杂度为O(logn)*/
 
         T &e = get(length());   /*拿出堆中最后一个元素*/
         int i = 1;
