@@ -5,6 +5,7 @@
 #include "ListGraph.h"
 #include "SharedPointer.h"
 #include "StaticArray.h"
+#include "DynamicArray.h"
 
 namespace Exercise_1
 {
@@ -31,20 +32,17 @@ void set_input(MyLib::ListGraph<int, int> &graph)
     graph.setEdge(1, 3, 1);
     graph.setEdge(3, 1, 1);
 
-    //graph.setEdge(0, 3, 1);
-    //graph.setEdge(3, 0, 1);
+    graph.setEdge(0, 3, 1);
+    graph.setEdge(3, 0, 1);
 
 }
 
-bool solution(void)
+/*这种解法属于以顶点为出发点解决问题*/
+bool solutionV1(MyLib::ListGraph<int, int> &graph)
 {
-    MyLib::ListGraph<int, int> graph;
-    
     MyLib::StaticArray<bool, VERTEX_CNT> setA;
     MyLib::StaticArray<bool, VERTEX_CNT> setB;
     bool OK = true;
-
-    set_input(graph);
 
     for (int i = 0; i < VERTEX_CNT; ++i)
     {
@@ -93,6 +91,50 @@ bool solution(void)
     }
 
     return OK;
+}
+
+bool solutionV2(MyLib::Graph<int, int> &graph)
+{
+    bool ret = true;
+    MyLib::DynamicArray<int> m_mark(graph.vCount());
+
+    /*m_mark记录每个顶点所在的子集,分别为-1,0,1. -1表示未分配,0和1分别表示两子集,采用这种方式有一个好处是当我们已知一条边的一个顶点所在子集为x,则这条边的另一个顶点为 (1-x)*/
+    for (int i = 0; i < graph.vCount(); i++)
+        m_mark[i] = -1;
+
+    for (int i = 0; ret && i < graph.vCount(); i++)
+    {
+        MyLib::SharedPointer< MyLib::Array<int> > res = graph.getAdjacent(i);
+        MyLib::Array<int> &arr = res->self();
+
+        if (-1 == m_mark[i])
+            m_mark[i] = 0;
+
+        for (int j = 0; j < arr.length(); j++)
+        {
+            int index = arr[j];
+            if (-1 == m_mark[index])
+            {
+                m_mark[index] = 1 - m_mark[i];
+            }
+            else if (m_mark[i] == m_mark[index])
+            {
+                ret = false;
+                break;
+            }
+        }
+    }
+
+    return ret;
+}
+
+bool check(void)
+{
+    MyLib::ListGraph<int, int> graph;
+
+    set_input(graph);
+
+    return solutionV2(graph);
 }
 
 }
@@ -153,7 +195,8 @@ void solution(void)
     /*思路:分别从各个值为0的顶点出发,其前后左右4个方向的顶点如果值为0,则距离为0,否则就是1(0 + 1 = 1),再分别从这4个当中值不为0的顶点出发,依次类推,迭代到4个方向的顶点值都不为0就可以返回了*/
     /*整个算法类似于BFS,或者说二叉树的层次遍历更形象一点,从距离为0的点出发,一层一层向下走,layer[i] = layer[i - 1]*/
 
-    int dist[ROW * COL];
+    //int dist[ROW * COL];
+    MyLib::DynamicArray<int>  dist(ROW * COL);
 
     for (int r = 0; r < ROW; r++)
     {
@@ -207,7 +250,7 @@ void solution(void)
         } 
     }
 
-    print_rst(dist);
+    print_rst(dist.array());
 }
 
 }
@@ -215,7 +258,7 @@ void solution(void)
 
 void graph_practice(void)
 {
-    std::cout << Exercise_1::solution() << std::endl;
+    std::cout << Exercise_1::check() << std::endl;
 
     std::cout << std::endl << std::endl;
     //

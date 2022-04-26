@@ -37,3 +37,9 @@
 
 .DS_Store
 a.out.dSYM
+
+build/
+
+.cache/
+
+compile_commands.json

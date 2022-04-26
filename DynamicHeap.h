@@ -30,12 +30,11 @@ public:
 protected:
     DynamicArray<T> m_array;
     
-    T &get(int i)
+    virtual T &get(int i)
     {
         return m_array[i - 1];
     }
 };
-
 
 }
 

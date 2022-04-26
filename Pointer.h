@@ -13,7 +13,7 @@ protected:
 	T *m_pointer;
 
 public:
-	Pointer(T *p = NULL)
+	Pointer(T *p = nullptr)
 	{
 		m_pointer = p;
 	}
@@ -40,7 +40,7 @@ public:
 
 	bool isNull() const 
 	{
-		return (NULL == m_pointer);
+		return (nullptr == m_pointer);
 	}
 
 	T *get() const

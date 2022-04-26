@@ -12,9 +12,6 @@ namespace MyLib
 template < typename T >
 class Array : public Object
 {
-protected:
-	T *m_array;
-
 public:
 	virtual bool set(int i, const T &e)				//O(1)
 	{
@@ -66,6 +63,13 @@ public:
 
 	virtual int length() const = 0;
 
+    Array<T> &self()
+    {
+        return *this;
+    }
+
+protected:
+	T *m_array;     /*具体的数组空间由子类决定*/
 };
 
 

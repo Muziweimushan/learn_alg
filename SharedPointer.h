@@ -94,19 +94,40 @@ public:
 
 //全局的比较操作符重载,比较操作符应该是要得到智能指针是否指向同一片堆空间
 template < typename T >
-bool operator== (const SharedPointer<T> &l, const SharedPointer<T> &r)
+static bool operator == (const SharedPointer<T> &l, const SharedPointer<T> &r)
 {
 	return (l.get() == r.get());
 }
 
 template < typename T >
-bool operator!= (const SharedPointer<T> &l, const SharedPointer<T> &r)
+static bool operator != (const SharedPointer<T> &l, const SharedPointer<T> &r)
 {
 	return !(l == r);
 }
 
+template < typename T >
+static bool operator == (const SharedPointer<T> &l, const T *r)
+{
+    return (l.get() == r);
+}
 
+template < typename T >
+static bool operator != (const SharedPointer<T> &l, const T *r)
+{
+    return !(l.get() == r);
+}
 
+template < typename T >
+static bool operator == (const T *l, const SharedPointer<T> &r)
+{
+    return (l == r.get());
+}
+
+template < typename T >
+static bool operator != (const T *l, const SharedPointer<T> &r)
+{
+    return !(l == r.get());
+}
 }
 
 

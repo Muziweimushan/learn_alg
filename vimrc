@@ -106,7 +106,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mbbill/undotree'
 Plug 'morhetz/gruvbox'
 Plug 'arzg/vim-colors-xcode'
-Plug 'kien/rainbow_parentheses.vim'
+"Plug 'kien/rainbow_parentheses.vim'
 Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -183,7 +183,8 @@ let g:gutentags_define_advanced_commands = 1
 let g_gutentags_trace = 1
 
 let $GTAGSLABLE = 'native-pygments'
-let $GTAGSCONF = '/home/linuxbrew/.linuxbrew/Cellar/global/6.6.8/share/gtags/gtags.conf'
+"let $GTAGSCONF = '/home/linuxbrew/.linuxbrew/Cellar/global/6.6.8/share/gtags/gtags.conf'
+let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
 
 "s 查找符号出现的地方
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
@@ -404,9 +405,9 @@ let g:rbpt_loadcmd_toggle = 0
 let g:rooter_patterns = ['.root', '.svn', '.git', '.project']
 
 "set rainbow_parentheses alway on
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+"au VimEnter * RainbowParenthesesToggle
+"au Syntax * RainbowParenthesesLoadRound
+"au Syntax * RainbowParenthesesLoadSquare
+"au Syntax * RainbowParenthesesLoadBraces
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }

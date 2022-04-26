@@ -301,9 +301,9 @@ extern void recursion_exercise3(void);
 
 int main()
 {
-    //graph_practice();
+    graph_practice();
     //testBTreeArray();
-    test_heap();
+    //test_heap();
     //
     //recursion_exercise1();
     //recursion_exercise2();

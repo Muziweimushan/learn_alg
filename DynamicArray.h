@@ -18,7 +18,7 @@ protected:
 	{
 		T *ret = new T[newLen];
 
-		if (NULL != ret)
+		if (nullptr != ret)
 		{
 			int copyLen = (oriLen > newLen) ? newLen : oriLen;
 
@@ -34,7 +34,7 @@ protected:
 	//更新新数组空间信息(指针和长度信息)到对象成员中
 	void update(T *array, int newLen)		//O(1)
 	{
-		if (NULL != array)
+		if (nullptr != array)
 		{
 			T *temp = this->m_array;
 
@@ -52,7 +52,7 @@ protected:
 	//用于在构造函数中设置数组空间信息,与update区别就是不需要释放原空间,因为没有
 	void init(T *array, int length)		//O(1)
 	{
-		if (NULL != array)
+		if (nullptr != array)
 		{
 			this->m_array = array;
 			this->m_length = length;
