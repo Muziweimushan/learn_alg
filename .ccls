@@ -2,7 +2,7 @@
 .
 -std=c++11
 -fPIC
--W{all,extra,pedantic,no-unused-function}
+-W{all,extra,pedantic,no-unused-function,shadow}
 
 -g3
 -O0

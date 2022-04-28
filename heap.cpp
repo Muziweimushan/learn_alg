@@ -104,7 +104,7 @@ namespace TestHeap
 
         int a[] = {2, 4, 1, 3, 5};
 
-        for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
+        for (unsigned int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
             heap.add(a[i]);
 
         while (heap.length())

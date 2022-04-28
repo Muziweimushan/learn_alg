@@ -30,7 +30,7 @@ vpath %.h $(DIR_INC)
 vpath %.c $(DIR_SRC)
 vpath %.cpp $(DIR_SRC)
 
-COMMON_COMPILE_FLAGS := -W{all,extra,pedantic,no-unused-function}
+COMMON_COMPILE_FLAGS := -W{all,extra,pedantic,no-unused-function,shadow,error}
 
 ifeq ($(DEBUG), "true")
 COMMON_COMPILE_FLAGS += -g3 -O0

@@ -276,9 +276,9 @@ public:
             LinkQueue<int> r;
             DynamicArray<bool> visited(vCount());
 
-            for(int i=0; i<visited.length(); i++)
+            for(int j=0; j<visited.length(); j++)
             {
-                visited[i] = false;
+                visited[j] = false;
             }
 
             q.add(i);
