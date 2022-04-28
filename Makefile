@@ -89,7 +89,7 @@ $(DIR_OUTPUT)/%.o : %.c
 
 $(DIR_OUTPUT)/%.o : %.cpp
 	@echo "Creating $@ ..."
-	@$(CXX) $(CXXFLAGS) -o $@ -c $(filter %.cpp, $^)
+	$(CXX) $(CXXFLAGS) -o $@ -c $(filter %.cpp, $^)
 
 clean :
 	@rm -rf $(DIR_OUTPUT)

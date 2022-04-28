@@ -10,6 +10,39 @@ namespace MyLib
 template < typename T >
 class DynamicArray : public Array<T>
 {
+public:
+	DynamicArray(int length = 0)		//O(1)
+	{
+		init(new T[length], length);
+	}
+
+	DynamicArray(const DynamicArray<T> &obj)		//O(n)
+	{
+		init(copy(obj.m_array, obj.m_length, obj.m_length), obj.m_length);
+	}
+
+	DynamicArray<T> &operator= (const DynamicArray<T> &obj)		//O(n)
+	{
+		update(copy(obj.m_array, obj.m_length, obj.m_length), obj.m_length);
+		
+		return *this;
+	}
+
+	void resize(int length)		//O(1)
+	{
+		update(copy(this->m_array, this->m_length, length), length);
+	}
+
+	int length() const			//O(1)
+	{
+		return m_length;
+	}
+
+	~DynamicArray()				//O(1)
+	{
+		delete[] this->m_array;
+	}
+
 protected:
 	int m_length;
 	
@@ -61,39 +94,6 @@ protected:
 		{
 			THROW_EXCEPTION(NoEnoughMemoryException, "No enougn memory to create DynamicArray object...");
 		}
-	}
-
-public:
-	DynamicArray(int length = 0)		//O(1)
-	{
-		init(new T[length], length);
-	}
-
-	DynamicArray(const DynamicArray<T> &obj)		//O(n)
-	{
-		init(copy(obj.m_array, obj.m_length, obj.m_length), obj.m_length);
-	}
-
-	DynamicArray<T> &operator= (const DynamicArray<T> &obj)		//O(n)
-	{
-		update(copy(obj.m_array, obj.m_length, obj.m_length), obj.m_length);
-		
-		return *this;
-	}
-
-	void resize(int length)		//O(1)
-	{
-		update(copy(this->m_array, this->m_length, length), length);
-	}
-
-	int length() const			//O(1)
-	{
-		return m_length;
-	}
-
-	~DynamicArray()				//O(1)
-	{
-		delete[] this->m_array;
 	}
 
 };
