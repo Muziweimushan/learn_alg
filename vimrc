@@ -27,8 +27,8 @@ set incsearch 								" 输入搜索内容时就显示搜索结果
 set hlsearch 								" 搜索时高亮显示被找到的文本
 set showcmd									" 显示输入的命令
 set showmatch								" 高亮括号匹配
-set matchtime=1								" 匹配括号高亮的时间(十分之一秒)  
-set matchpairs={:},(:),[:]						" 匹配括号"{}""()"  
+set matchtime=1								" 匹配括号高亮的时间(十分之一秒)
+set matchpairs={:},(:),[:]						" 匹配括号"{}""()"
 
 
 " 检测文件编码时，优先考虑 UTF-8
@@ -63,6 +63,10 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 "autocmd BufWinLeave * call clearmatches() " for performance
 
+"function! TrimWhiteSpace()
+    ""%s/\s\+$//e
+"endfunction
+"autocmd BufWritePre     * :call TrimWhiteSpace()
 
 "命令模式下命令补全
 set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
@@ -411,3 +415,4 @@ let g:rooter_patterns = ['.root', '.svn', '.git', '.project']
 "au Syntax * RainbowParenthesesLoadBraces
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+

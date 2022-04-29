@@ -218,7 +218,7 @@ public:
 
 	virtual bool end(void)
 	{
-		return (NULL == m_current);
+		return (nullptr == m_current);
 	}
 
 	virtual T current(void)

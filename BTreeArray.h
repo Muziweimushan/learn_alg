@@ -15,7 +15,7 @@ public:
     BTreeArray(int height)
         : m_value(1, (1 << height) - 1),
         m_mark(m_value.lower(), m_value.upper()),
-        m_height(height)
+        m_topLimit(height)
     {
         this->m_array = nullptr;
         for (int i = m_mark.lower(); i <= m_mark.upper(); i++) 
@@ -25,7 +25,7 @@ public:
     BTreeArray(const BTreeArray<T> &obj)
         : m_value(obj.m_value),
         m_mark(obj.m_mark),
-        m_height(obj.height)
+        m_topLimit(obj.m_topLimit)
     {
         this->m_array = nullptr;
     }
@@ -36,7 +36,7 @@ public:
         {
             this->m_value = obj.m_value;
             this->m_mark = obj.m_mark;
-            this->m_height = obj.m_height;
+            this->m_topLimit = obj.m_topLimit;
         }
 
         return *this;
@@ -122,7 +122,7 @@ public:
 
         m_value = value;
         m_mark = mark;
-        m_height = nh;
+        m_topLimit = nh;
     }
 
     /*删除所有节点*/
@@ -136,6 +136,12 @@ public:
     int height(void) const
     {
         return height(1);
+    }
+
+    /*返回树的最大高度*/
+    int topLimit(void) const
+    {
+        return m_topLimit;
     }
 
     /*返回树的节点个数*/
@@ -215,7 +221,7 @@ protected:
 private:
     RangeArray<T> m_value;
     RangeArray<bool> m_mark;
-    int m_height;   /*顺序二叉树的高度*/
+    int m_topLimit;   /*顺序二叉树的最大高度*/
 };
 
 }

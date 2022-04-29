@@ -269,8 +269,10 @@ int maxPathSum(BTreeNode<int> *root, LinkList<int> &queue)
             if (checkUpdate(left_r_right))
             {
                 LinkList<int> tmp;
-                for (leftQueue.move(0); !leftQueue.end(); leftQueue.next())
-                    tmp.insert(leftQueue.current());
+                /*左子树需要逆序取出来*/
+                for (int i = leftQueue.length() - 1; i >= 0; i--)
+                //for (leftQueue.move(0); !leftQueue.end(); leftQueue.next())
+                    tmp.insert(leftQueue.get(i));
 
                 tmp.insert(root->value);
 
