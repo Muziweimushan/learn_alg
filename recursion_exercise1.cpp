@@ -333,6 +333,90 @@ void check(void)
 }
 }
 
+namespace check_exer8
+{
+/*课堂演示:链表翻转的三指针解法和递归解法*/
+
+class WorkList : public MyLib::LinkList<int>
+{
+public:
+    typedef MyLib::LinkList<int>::Node Node;
+
+    /*链表翻转的三指针常规解法*/
+    void reverseClassic(void)
+    {
+        Node *head = m_header.next;
+        Node *pre = nullptr;
+        Node *next = (nullptr != head) ? head->next : nullptr;
+
+        while (head)
+        {
+            head->next = pre;
+            pre = head;
+            head = next;
+            next = next ? next->next : nullptr; /*next指针可能为空*/
+            //next->next = head;
+        }
+
+        m_header.next = pre;
+
+        std::cout << "done!" << std::endl;
+    }
+    
+    /*递归解法*/
+    void reverseRecursive(void)
+    {
+        m_header.next = reverse(m_header.next);
+    }
+
+protected:
+    /*递归解法的功能函数,实现递归翻转链表,约定返回翻转后的链表头*/
+    Node *reverse(Node *head)
+    {
+        Node *ret = nullptr;
+
+        if (head)
+        {
+            /*链表翻转的问题分解为将当前头节点取出来,递归地对剩余链表进行翻转后与头节点进行拼接即可*/
+
+            Node *next = head->next; /*记录下剩余链表在翻转前的头节点才能进行拼接,next也就是翻转后链表的末元素*/
+            Node *r = reverse(head->next);
+
+            if (r)
+            {
+                /*常规情况,将翻转后的链表与当前头节点进行拼接*/
+                ret = r;
+                next->next = head;  /*将头节点插入到翻转后链表的尾部即完成原问题的解*/
+            }
+            else
+            {
+                /*此处为平凡情况,即剩余链表个数为空,这时候head本身就应当是函数的返回值*/
+                ret = head;
+            }
+            /*翻转后head就是链表最后一个元素,next指针需要赋值为空*/
+            head->next = nullptr;
+        }
+        /*如果head为空显然就返回空,符合语义*/
+        return ret;
+    }
+};
+
+void check(void)
+{
+    WorkList list;
+
+    for (int i = 0; i < 5; i++)
+        list.insert(i);
+
+    list.reverseClassic();
+    list.reverseRecursive();
+
+    for (list.move(0); !list.end(); list.next())
+        std::cout << list.current() << std::endl;
+}
+
+}
+
 void recursion_exercise1(void)
 {
 
@@ -412,4 +496,7 @@ void recursion_exercise1(void)
 
     check_exer7::check();
     std::cout << "**********************End exercise 7 ************" << std::endl << std::endl << std::endl << std::endl << std::endl;
+
+
+    check_exer8::check();
 }

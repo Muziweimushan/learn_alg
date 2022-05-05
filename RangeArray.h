@@ -16,7 +16,7 @@ public:
     RangeArray(int lower, int upper)
     {
         if (upper < lower)
-          THROW_EXCEPTION(InvalidParameterException, "Initializing RangeArray with invalid range ...");
+            THROW_EXCEPTION(InvalidParameterException, "Initializing RangeArray with invalid range ...");
 
         this->m_array = new T[upper - lower + 1];
         if (nullptr != this->m_array)
@@ -47,7 +47,7 @@ public:
         else
         {
             THROW_EXCEPTION(NoEnoughMemoryException, "No enough memory to create RangeArray object ...");
-        } 
+        }
     }
 
     RangeArray<T> &operator = (const RangeArray<T> &obj)
@@ -72,7 +72,7 @@ public:
             else
             {
                 THROW_EXCEPTION(NoEnoughMemoryException, "No enough memory to create RangeArray object ...");
-            } 
+            }
         }
 
         return *this;
@@ -85,7 +85,7 @@ public:
 
     bool get(int i, T &e) const
     {
-        return Array<T>::get(i - m_lower, e); 
+        return Array<T>::get(i - m_lower, e);
     }
 
     T &operator [] (int i)
