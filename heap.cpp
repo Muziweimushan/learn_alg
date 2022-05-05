@@ -8,7 +8,7 @@
 #include "Sort.h"
 
 
-bool toHeap(MyLib::BTreeArray<int> &arr)
+bool toHeap(MyLib::BTreeArray<int> &arr, bool isMax = true)
 {
     bool ret = true;
 
@@ -34,11 +34,11 @@ bool toHeap(MyLib::BTreeArray<int> &arr)
             {
                 /*在当前顶点的左孩子和右孩子中挑选更大者,ci指向左孩子*/
                 //std::cout << "in while :  ci = " << ci << std::endl;
-                if (ci < size && (arr[ci] < arr[ci + 1]))
+                if (ci < size && (isMax ? (arr[ci] < arr[ci + 1]) : (arr[ci] > arr[ci + 1])))
                     ci++;
 
                 /*如果当前顶点值比左右孩子的都大,那么while迭代可以结束了*/
-                if (arr[ci] < e)
+                if (isMax ? (arr[ci] < e) : (arr[ci] > e))
                     break;
 
                 /*否则的话,将数值更大的孩子的值交换至父节点处*/
@@ -60,7 +60,12 @@ bool toHeap(MyLib::BTreeArray<int> &arr)
     return ret;
 }
 
-bool isHeap(MyLib::BTreeArray<int> &bt, int i = 1)
+bool compare(int lv, int rv, bool isMax = true)
+{
+    return (isMax ? (lv >= rv) : (lv <= rv));
+}
+
+bool isHeap(MyLib::BTreeArray<int> &bt, int i = 1, bool isMax = true)
 {
     bool ret = true;
     
@@ -73,12 +78,13 @@ bool isHeap(MyLib::BTreeArray<int> &bt, int i = 1)
         if (!bt.isNull(lc) && !bt.isNull(rc))
         {
             /*左孩子右孩子都存在的情况,值比左右孩子都大而且左子树右子树也是堆*/
-            ret = ((bt[i] >= bt[lc]) && (bt[i] >= bt[rc]) && (isHeap(bt, lc)) && (isHeap(bt, rc)));
+            //ret = ((bt[i] >= bt[lc]) && (bt[i] >= bt[rc]) && (isHeap(bt, lc)) && (isHeap(bt, rc)));
+            ret = ((compare(bt[i], bt[lc], isMax)) && (compare(bt[i], bt[rc], isMax)) && (isHeap(bt, lc, isMax)) && (isHeap(bt, rc, isMax)));
         }
         else if (!bt.isNull(lc) && bt.isNull(rc))
         {
             /*左子树存在而右子树不存在,则值比左子树大且左子树也为堆是成立*/
-            ret = ((bt[i] >= bt[lc]) && (isHeap(bt, lc)));
+            ret = ((compare(bt[i], bt[lc], isMax)) && (isHeap(bt, lc, isMax)));
         }
         else if (bt.isNull(lc) && !bt.isNull(rc))
         {
@@ -143,9 +149,9 @@ namespace TestToHeap
         for (uint32_t i = 1, j = 0; j < sizeof(a) / sizeof(*a); j++, i++)
             arr.set(i, a[j]);
 
-        if (toHeap(arr))
+        if (toHeap(arr, false))
         {
-            if (isHeap(arr))
+            if (isHeap(arr, 1, false))
                 for (int i = 1; i <= arr.count(); i++)
                     std::cout << arr[i] << std::endl;
             else
@@ -160,7 +166,7 @@ namespace TestToHeap
 
 void test_heap(void)
 {
-    //TestToHeap::check();
+    TestToHeap::check();
 
-    TestHeap::check();
+    //TestHeap::check();
 }

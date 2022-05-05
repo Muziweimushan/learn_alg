@@ -58,7 +58,7 @@ int MaxInArray(int a[], int n)
 }
 
 /*问题4 : 求子集*/
-/*思路: 
+/*思路:
  * 对于空集子集就是{}
  * 对于集合{a}来说, 子集就是{}和{a},相当于a加上了空集的子集
  * 对于{a, b}, 子集就是{a} {b} {a, b} {}, 相当于b分别加上集合a的子集
@@ -73,7 +73,7 @@ void subst(MyLib::String &str, MyLib::LinkList<MyLib::String> &res)
         res.insert("");
         return;
     }
-    
+
     /*拿出来第一个*/
     MyLib::String head = str[0];
     subst(str.remove(0, 1), res);   /*求剩下的n-1个集合的所有子集*/
@@ -128,7 +128,7 @@ void duplicate(ListHead *list)
             prev = prev->next;
         }
     }
-    /*开启下一轮递归*/    
+    /*开启下一轮递归*/
     duplicate(cur->next);
 }
 
@@ -196,8 +196,8 @@ void rmdup_iter(Node *&head, int v)
             next = next->next;
             continue;
         }
-        
-        /*要删除的节点是next,删除前需要构建cur与删除节点的next指针的关系,即 cur->next = next->next*/ 
+
+        /*要删除的节点是next,删除前需要构建cur与删除节点的next指针的关系,即 cur->next = next->next*/
         Node *toDel = next;
         cur->next = next->next;
         next = next->next;
@@ -276,7 +276,7 @@ static int average(int *a, int n, int idx, int &rem)
 /*
  * 问题7:求n个数的平均等价于求 a0 /n + a1 /n + ... an-1 / n
  * 除法会有余数,将所有的余数加起来再除n就能补回来
- * 
+ *
  * PS:这里的入参rem是不需要的,只是为了测试用而已
  */
 int average(int *a, int n, int &rem)
@@ -317,11 +317,11 @@ void check(void)
         a[i] = rand();
 
     uint64_t sum = get_sum(a, length);
-    
+
     int rem = 0;
     int avg = average(a, length, rem);
     std::cout << "average = " << avg  << std::endl;
-    
+
     uint64_t check_sum = (uint64_t)avg * length + rem;
 
     if (sum != check_sum)
