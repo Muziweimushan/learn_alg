@@ -32,7 +32,7 @@ vpath %.cpp $(DIR_SRC)
 
 COMMON_COMPILE_FLAGS := -W{all,extra,pedantic,no-unused-function,shadow,error}
 
-ifeq ($(DEBUG), "true")
+ifeq ("$(DEBUG)", "true")
 COMMON_COMPILE_FLAGS += -g3 -O0
 else
 COMMON_COMPILE_FLAGS += -g0 -O2

@@ -222,7 +222,7 @@ bool setMark(MyLib::ListGraph<int, int> &graph, MyLib::DynamicArray<int> &mark, 
         MyLib::SharedPointer< MyLib::Array<int> > p = graph.getAdjacent(idx);
         MyLib::Array<int> &adj = p->self();
 
-        for (int j = 0; j < adj.length(); j++)
+        for (int j = 0; ret && j < adj.length(); j++)
             ret = setMark(graph, mark, adj[j], 1 - mark[idx]) && (mark[idx] != mark[adj[j]]);
     }
 

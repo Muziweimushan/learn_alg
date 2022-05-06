@@ -1,8 +1,13 @@
 #include <iostream>
 #include <cstring>
 
+#include "BTreeArray.h"
+#include "BTreeNode.h"
 #include "MyString.h"
 #include "LinkList.h"
+#include "BTree.h"
+#include "SharedPointer.h"
+#include "LinkStack.h"
 
 bool isContained(int a[], int pos, int end, const int x)
 {
@@ -340,7 +345,7 @@ namespace check_exer8
 class WorkList : public MyLib::LinkList<int>
 {
 public:
-    typedef MyLib::LinkList<int>::Node Node;
+    using Node = MyLib::LinkList<int>::Node;
 
     /*链表翻转的三指针常规解法*/
     void reverseClassic(void)
@@ -413,6 +418,83 @@ void check(void)
 
     for (list.move(0); !list.end(); list.next())
         std::cout << list.current() << std::endl;
+}
+
+}
+
+namespace check_exer9
+{
+/*
+ * 问题描述:对于给定数值sum,查找二叉树中是否存在一条从根节点到叶节点的路径,路径之和等于x
+ * 思路:只有一个根节点的情况,直接判断,存在左右孩子时,判断左/右子树的路径和是否等于(sum - 根节点)
+ */
+
+bool BTreeSumCal(MyLib::BTreeNode<int> *root, int sum, MyLib::Stack<int> &stack)
+{
+    bool ret = false;
+
+    if (nullptr == root)
+        return false;
+
+    if (!root->left && !root->right && sum == root->value)
+    {
+        stack.push(sum);
+        ret = true;
+    }
+    else
+    {
+        /*递归进入左右子树查找*/
+        if ((ret = BTreeSumCal(root->left, (sum - root->value), stack)))
+        {
+            stack.push(root->value);
+        }
+        else if ((ret = BTreeSumCal(root->right, (sum - root->value), stack)))
+        {
+            stack.push(root->value);
+        }
+    }
+
+    return ret;
+}
+
+MyLib::SharedPointer<MyLib::Stack<int>> BTreeSum(MyLib::BTree<int> &tree, int sum)
+{
+    MyLib::LinkStack<int> *ret = new MyLib::LinkStack<int>;
+
+    if (!BTreeSumCal(tree.root(), sum, *ret))
+        delete ret, ret = nullptr;
+
+    return ret;
+}
+
+void check(void)
+{
+    MyLib::BTree<int> tree;
+    MyLib::BTreeNode<int> *node = nullptr;
+
+    tree.insert(1, nullptr);
+    node = tree.root();
+
+    tree.insert(2, node, MyLib::LEFT);
+    tree.insert(3, node, MyLib::RIGHT);
+
+    node = tree.find(2);
+    tree.insert(-1, node);
+
+    MyLib::SharedPointer<MyLib::Stack<int>> ret = BTreeSum(tree, 1);
+    if (!ret.isNull())
+    {
+        MyLib::Stack<int> &stack = *ret.get();
+        while (stack.size() > 0)
+        {
+            std::cout << stack.top() << std::endl;
+            stack.pop();
+        }
+    }
+    else
+    {
+        std::cout << "BTree sum not exist ..." << std::endl;
+    }
 }
 
 }
@@ -499,4 +581,6 @@ void recursion_exercise1(void)
 
 
     check_exer8::check();
+
+    check_exer9::check();
 }
