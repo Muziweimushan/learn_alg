@@ -427,6 +427,7 @@ namespace check_exer9
 /*
  * 问题描述:对于给定数值sum,查找二叉树中是否存在一条从根节点到叶节点的路径,路径之和等于x
  * 思路:只有一个根节点的情况,直接判断,存在左右孩子时,判断左/右子树的路径和是否等于(sum - 根节点)
+ * 这里有个技巧:在递归中如果需要记录中间结果可以使用栈数据结构完成
  */
 
 bool BTreeSumCal(MyLib::BTreeNode<int> *root, int sum, MyLib::Stack<int> &stack)
@@ -445,13 +446,9 @@ bool BTreeSumCal(MyLib::BTreeNode<int> *root, int sum, MyLib::Stack<int> &stack)
     {
         /*递归进入左右子树查找*/
         if ((ret = BTreeSumCal(root->left, (sum - root->value), stack)))
-        {
             stack.push(root->value);
-        }
         else if ((ret = BTreeSumCal(root->right, (sum - root->value), stack)))
-        {
             stack.push(root->value);
-        }
     }
 
     return ret;
@@ -497,6 +494,46 @@ void check(void)
     }
 }
 
+}
+
+namespace check_exer10
+{
+bool isPostString(MyLib::BTreeNode<char> *node, MyLib::String &s, int &pos)
+{
+    bool ret = true;
+
+    if (node)
+    {
+        return ((isPostString(node->left, s, pos)) && (isPostString(node->right, s, pos)) && (s[pos++] == node->value));
+    }
+
+    return ret;
+}
+
+bool isPostString(MyLib::BTree<char> &bt, MyLib::String &s)
+{
+    int pos = 0;
+    return isPostString(bt.root(), s, pos);
+}
+
+void check(void)
+{
+    MyLib::String s = {"abcde"};
+    MyLib::BTree<char> tree;
+    MyLib::BTreeNode<char> *node = nullptr;
+
+    tree.insert('e', nullptr);
+    node = tree.root();
+
+    tree.insert('a', node, MyLib::LEFT);
+    tree.insert('d', node, MyLib::RIGHT);
+
+    node = tree.find('d');
+    tree.insert('b', node);
+    tree.insert('c', node);
+
+    std::cout << isPostString(tree, s) << std::endl;
+}
 }
 
 void recursion_exercise1(void)
@@ -583,4 +620,6 @@ void recursion_exercise1(void)
     check_exer8::check();
 
     check_exer9::check();
+
+    check_exer10::check();
 }
