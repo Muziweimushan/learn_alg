@@ -41,25 +41,80 @@ bool inOrdered(int a[], int i, bool min2max)
 
 }
 
+/*
+ * 唐老师的版本
+ * 递归式如下:
+ * isOrdered(a, n) = f(n):
+ *      n = 1时: true
+ *      n > 1时: (a[b] <= a[b + 1]) && f(b + 1), 即保证对于在[0, n - 1)的b,都满足a[b]和a[b - 1]是有序的,且f(b+1)也就是从b+1开始的序列也是有序的
+ *
+ */
+bool isOrdered_V2(int a[], int begin, int end, bool min2max = true)
+{
+    bool ret = true;
+
+    if (begin < end)
+    {
+        if (min2max)
+            ret = (a[begin] <= a[begin + 1] && isOrdered_V2(a, begin + 1, end, min2max));
+        else
+            ret = (a[begin] >= a[begin + 1] && isOrdered_V2(a, begin + 1, end, min2max));
+    }
+
+    return ret;
+}
+
 /*问题2 : 判断数组a是否已经有序*/
 bool isOrdered(int a[], int n, bool min2max = true)
 {
     /*数组是有序的,0-1是有序的,1-2是有序的...n-2 到n-1是有序的*/
-    return inOrdered(a, n - 1, min2max);
+    ::srand(::time(nullptr));
+    int select = ::rand() % 2;
+    switch (select)
+    {
+        case 0 : { return inOrdered(a, n, min2max); }
+        case 1 : { return isOrdered_V2(a, 0, n - 1, min2max); }
+    }
+
+    return false;
 }
 
-int MaxInArray(int a[], int i, int n, int max)
+/*
+ * 思路:
+ * 当n = 1, 数组最大值为a[0]
+ * 当n > 1, max(a) = maximum(a[0], f[a{1, 2..., n - 1}])
+ *
+ */
+/*求a[begin, end]上的最大值*/
+int MaxInArray(int a[], int begin, int end)
 {
-    if (i >= n)
-        return max;
+    int ret;
+    if (end == begin)
+    {
+        ret = a[begin];
+    }
+    else
+    {
+#if 0
+        int tmp = MaxInArray(a, begin + 1, end);
+        ret = (a[begin] > tmp) ? a[begin] : tmp;
+#else
+        /*上面这么写会导致递归深度很大,空间复杂度是S(n),改进办法是子问题在划分时将数组分成大小相同的两个子数组*/
+        int mid = begin + ((end - begin) >> 1);
+        int lmax = MaxInArray(a, begin, mid);
+        int rmax = MaxInArray(a, mid + 1, end);
 
-    return MaxInArray(a, i + 1, n, a[i] > max ? a[i] : max);
+        ret = (lmax > rmax) ? lmax : rmax;
+#endif
+    }
+
+    return ret;
 }
 
 /*问题3 : 查找数组中最大元素*/
 int MaxInArray(int a[], int n)
 {
-   return MaxInArray(a, 1, n, a[0]);
+    return MaxInArray(a, 0, n - 1);
 }
 
 /*问题4 : 求子集*/
@@ -70,6 +125,7 @@ int MaxInArray(int a[], int n)
  * 对于个数3个的也是类似的
  * 对于个数n个的集合,它的子集就是set[n-1] 依次加上 前n-1个的集合的子集(或者说由第0个依次加上后面n-1个组成的子集)
  * 注意这里的str需要先去重
+ * 这里体现了递归中将子问题的答案进行加工从而得到原问题的解的特性
  * */
 void subst(MyLib::String &str, MyLib::LinkList<MyLib::String> &res)
 {
@@ -214,6 +270,42 @@ void rmdup_iter(Node *&head, int v)
     head = fake_head.next;
 }
 
+void rmdup_iter_V2(Node *&head, int v)
+{
+    /*slider指示当前节点,pre指示slider的直接前驱*/
+    Node *pre = nullptr;
+    Node *slider = head;
+
+    while (slider)
+    {
+        if (v == slider->value)
+        {
+            /*首先需要检查slider是否为头节点,类似LinkList中删除操作对current指针的处理*/
+            /*在单链表的删除中,当一个节点被删除,我们需要重建删除节点的前驱和它后继的关系,即 pred->next = succ, 有一个例外就是当待删除节点是头节点,此时不需要此操作*/
+            if (head == slider)
+            {
+                head = head->next;
+                delete slider;
+                slider = head;
+            }
+            else
+            {
+                /*pred->next = succ*/
+                pre->next = slider->next;
+                Node *toDel = slider;
+                slider = slider->next;
+                delete toDel, toDel = nullptr;
+            }
+        }
+        else
+        {
+            /*不需要删除则同时向后移动*/
+            pre = slider;
+            slider = slider->next; 
+        }
+    }
+}
+
 namespace check_exer6
 {
 
@@ -236,7 +328,7 @@ void check(void)
 
     Node *head = new Node;
     //int c[] = {5, 2, 1, 1, 6, 5, 4, 13, 1, 11, 23, 2, 56};
-    int c[] = {1, 4, -1, 22, 33, -2, 5, 8, 2, 2, 2, 4, 5, 6, 6, 6, 77, 8,-1};
+    int c[] = {6, 1, 4, -1, 22, 33, -2, 6, 5, 8, 2, 2, 2, 4, 5, 6, 6, 77, 8,-1};
     //int c[] = {1};
     Node* cur = head;
     head->next = NULL;
@@ -256,8 +348,8 @@ void check(void)
     std::cout << "origin list :" << std::endl;
     print_list(head, false);
 
-    //rmdup_iter(head, todel);
-    rmdup(head, todel);
+    rmdup_iter_V2(head, todel);
+    //rmdup(head, todel);
     std::cout << "after remove : list = " << std::endl;
     print_list(head);
 }
@@ -367,7 +459,7 @@ public:
 
         std::cout << "done!" << std::endl;
     }
-    
+
     /*递归解法*/
     void reverseRecursive(void)
     {
@@ -553,10 +645,10 @@ void recursion_exercise1(void)
 
     //int b[] = {33, 29, 10, 8, -1, -13141};
     //int b[] = {1, 29, 33, 102, 1111, 9999};
-    int b[] = {5, 4, 3};
+    int b[] = {5, 6, 3};
     //int b[] = {33, 29, 10, 8, -1, -13141};
     //std::cout << "is ordered : " << isOrdered(b, (sizeof(b) / sizeof(*b))) << std::endl;
-    std::cout << "is ordered : " << isOrdered(b, (sizeof(b) / sizeof(*b)), false) << std::endl;
+    std::cout << "is ordered : " << isOrdered(b, (sizeof(b) / sizeof(*b)), true) << std::endl;
 
     std::cout << "End exercise 2 ..." << std::endl << std::endl << std::endl << std::endl << std::endl;
 
