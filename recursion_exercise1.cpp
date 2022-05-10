@@ -628,6 +628,52 @@ void check(void)
 }
 }
 
+namespace check_exer11
+{
+
+bool isArithProg(int a[], int begin, int end, int &d)
+{
+    bool ret = true;
+
+    if (end - begin > 1)
+    {
+        /*数组元素个数等于2个,此时问题分解,先判断后面的n-1个元素组成的数列是否是等差数列,然后判断当前a[end]和a[begin]的差是否与后面n-1个数列的公差一样*/
+        /*需要先递归,求出公差,这代码写的太牛了*/
+        ret = isArithProg(a, begin + 1, end, d);
+        ret = (ret && (d == (a[begin + 1] - a[begin])));
+    }
+    else if (1 == (end - begin))
+    {
+        d = a[end] - a[begin];
+        ret = true;
+    }
+    /*else分支就是只有一个元素情况,代码上认为只有一个元素的数组也是等差数列*/
+    else
+    {
+        ;
+    }
+
+    return ret;
+}
+
+bool isArithProg(int a[], int n, int &d)
+{
+    return isArithProg(a, 0, n - 1, d);
+}
+
+void check(void)
+{
+    int a[] = {10, 5, 0, -5, -10, -15, -20, -25};
+    int d;
+
+    if (isArithProg(a, sizeof(a) / sizeof(a[0]), d))
+        std::cout << "is arithmetic progression, d = " << d << std::endl;
+    else
+        std::cout << "is not a arithmetic progression ..." << std::endl;
+}
+
+}
+
 void recursion_exercise1(void)
 {
 
@@ -714,4 +760,6 @@ void recursion_exercise1(void)
     check_exer9::check();
 
     check_exer10::check();
+
+    check_exer11::check();
 }

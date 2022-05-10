@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
 #include <iostream>
 #include "LinkList.h"
 #include "Array.h"
@@ -16,6 +21,7 @@ public:
     {
         WorkList(array.array(), array.length());
     }
+
     WorkList(T *arr, int len)
     {
         for (int i = 0; i < len; i++)
@@ -25,3 +31,5 @@ private:
 };
 
 }
+
+#endif

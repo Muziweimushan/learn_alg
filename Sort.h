@@ -17,13 +17,12 @@ class Sort : public Object
         Sort &operator = (const Sort &);
 
         template < typename T >
-            static void Swap(T &a, T &b)
-            {
-                T c(a);
-                a = b;
-                b = c;
-            }
-
+        static void Swap(T &a, T &b)
+        {
+            T c(a);
+            a = b;
+            b = c;
+        }
 
         //实现2个有序序列的合并
         //while循环的运行次数为end-begin+1次, for循环也一样,所以时间复杂度为 O(n)线性阶的复杂度
