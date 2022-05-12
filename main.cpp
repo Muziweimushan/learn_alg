@@ -307,7 +307,7 @@ int main()
     //testBTreeArray();
     //test_heap();
     //
-    //recursion_exercise1();
+    recursion_exercise1();
     //recursion_exercise2();
     //recursion_exercise3();
 #if 0
@@ -334,16 +334,6 @@ int main()
     MatrixGraphDemo();
     //test_graph();
 #endif
-    enum { ARRAY_CNT = 100000 };
-    int *a = new int[ARRAY_CNT];
-    ::srand(::time(nullptr));
-    for (int i = 0; i < ARRAY_CNT; i++)
-        a[i] = rand();
-
-    MyLib::Sort::Quick<int>(a, ARRAY_CNT);
-
-
-    delete [] a;
 
     return 0;
 }

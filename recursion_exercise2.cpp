@@ -424,7 +424,7 @@ static void test_maxpathsum(void)
 }
 
 
-void recursion_exercise3(void)
+void recursion_exercise2(void)
 {
     int n;
     //char s[] = "dafajgkaajakjjjljgapgjaaaakg";

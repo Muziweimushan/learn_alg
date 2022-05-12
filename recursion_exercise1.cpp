@@ -75,7 +75,6 @@ bool isOrdered(int a[], int n, bool min2max = true)
         case 0 : { return inOrdered(a, n, min2max); }
         case 1 : { return isOrdered_V2(a, 0, n - 1, min2max); }
     }
-
     return false;
 }
 
@@ -630,6 +629,73 @@ void check(void)
 
 namespace check_exer11
 {
+/*递推解法:先通过前2项确定公差,然后从第2项开始计算与前一项的公差dx,若迭代过程中公差都相等,则迭代结束可判断是等差数列*/
+bool isArithProg_V4(int a[], int n, int &d)
+{
+    bool ret = true;
+
+    if (n > 1)
+    {
+        int d0 = a[1] - a[0];
+
+        for (int i = 2; ret && i < n; i++)
+        {
+            int di = a[i] - a[i - 1];
+            ret = (d0 == di);
+        }
+
+        if (ret)
+            d = d0;
+    }
+
+    return ret;
+}
+
+void isArithProg_V3(int a[], int begin, int end, int &d, bool &ret)
+{
+    if (!(end - begin))
+    {
+        ret = true;
+    }
+    else if (1 == (end - begin))
+    {
+        ret = true;
+        d = a[end] - a[begin];
+    }
+    else
+    {
+        int dx = a[begin + 1] - a[begin];
+        ret = ret && (d == dx);
+        /*尾递归*/
+        isArithProg_V3(a, begin + 1, end, d, ret);
+    }
+}
+
+bool isArithProg_V2(int a[], int begin, int end, int &d)
+{
+    bool ret = true;
+
+    if (end - begin > 1)
+    {
+        int mid = begin + ((end - begin) >> 1);
+        int d1 = 0;
+        int d2 = 0;
+        ret = (isArithProg_V2(a, begin, mid, d1) && isArithProg_V2(a, mid, end, d2));
+
+        /*三目运算符,返回值为true且左右两子数列公差相等时,ret为true,否则为false,且为true时通过逗号表达式对d进行赋值*/
+        ret = (ret && (d1 == d2)) ? (d = d1, true) : false;
+    }
+    else if (1 == (end - begin))
+    {
+        d = a[end] - a[begin];
+    }
+    else
+    {
+        ;
+    }
+
+    return ret;
+}
 
 bool isArithProg(int a[], int begin, int end, int &d)
 {
@@ -637,13 +703,14 @@ bool isArithProg(int a[], int begin, int end, int &d)
 
     if (end - begin > 1)
     {
-        /*数组元素个数等于2个,此时问题分解,先判断后面的n-1个元素组成的数列是否是等差数列,然后判断当前a[end]和a[begin]的差是否与后面n-1个数列的公差一样*/
+        /*数组元素个数大于2个,此时问题分解,先判断后面的n-1个元素组成的数列是否是等差数列,然后判断当前a[end]和a[begin]的差是否与后面n-1个数列的公差一样*/
         /*需要先递归,求出公差,这代码写的太牛了*/
         ret = isArithProg(a, begin + 1, end, d);
         ret = (ret && (d == (a[begin + 1] - a[begin])));
     }
     else if (1 == (end - begin))
     {
+        /*仅有2个元素,代码实现上认为是等差数列*/
         d = a[end] - a[begin];
         ret = true;
     }
@@ -658,15 +725,57 @@ bool isArithProg(int a[], int begin, int end, int &d)
 
 bool isArithProg(int a[], int n, int &d)
 {
-    return isArithProg(a, 0, n - 1, d);
+    uint32_t idx = 0;
+    bool ret = true;
+
+    srand(time(nullptr));
+    idx = rand() % 4;
+    switch (idx)
+    {
+        case 0:
+        {
+            std::cout << "vesion 1 ..." << std::endl;
+            ret = isArithProg(a, 0, n - 1, d);
+            break;
+        }
+        case 1:
+        {
+            /*二分子问题版本*/
+            std::cout << "vesion 2 ..." << std::endl;
+            ret = isArithProg_V2(a, 0, n - 1, d);
+            break;
+        }
+        case 2:
+        {
+            std::cout << "vesion 3 ..." << std::endl;
+            isArithProg_V3(a, 0, n - 1, d, ret);
+            /*尾递归版本*/
+            break;
+        }
+        case 3:
+        {
+            std::cout << "vesion 4 ..." << std::endl;
+            ret = isArithProg_V4(a, n, d);
+            break;
+        }
+    }
+
+    return ret;
 }
 
 void check(void)
 {
-    int a[] = {10, 5, 0, -5, -10, -15, -20, -25};
+    enum { COUNT = 8000000 };
+    int *a = new int[COUNT];
     int d;
 
-    if (isArithProg(a, sizeof(a) / sizeof(a[0]), d))
+    if (!a)
+        return;
+
+    for (int i = 0; i < COUNT; i++)
+        a[i] = i;
+
+    if (isArithProg(a, COUNT, d))
         std::cout << "is arithmetic progression, d = " << d << std::endl;
     else
         std::cout << "is not a arithmetic progression ..." << std::endl;
