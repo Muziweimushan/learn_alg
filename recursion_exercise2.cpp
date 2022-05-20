@@ -72,7 +72,7 @@ bool isIntStr(const char *s, int &n)
     return isIntStr(s, 0, n = 0);
 }
 
-static void mySwap(int &a, int &b)
+static void mySwap(uint32_t &a, uint32_t &b)
 {
     /*用异或来做不知道为啥不行...*/
     int c = a;
