@@ -115,12 +115,13 @@ Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'antoinemadec/coc-fzf'
+Plug 'dinhhuy258/vim-local-history', {'branch': 'master', 'do': ':UpdateRemotePlugins'}
 "Plug 'jackguo380/vim-lsp-cxx-highlight'
 "插件到此结束
 call plug#end()
 
 
-"set background=dark
+set background=dark
 
 colorscheme onedark
 "colorscheme xcodelight
@@ -416,3 +417,22 @@ let g:rooter_patterns = ['.root', '.svn', '.git', '.project']
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
+" local history
+nnoremap <leader>L :LocalHistoryToggle<CR>
+let g:local_history_path = expand('~/.cache/local-history')
+let g:local_history_max_changes = 10000000
+let g:local_history_new_change_delay = 0
+let g:local_history_enabled = 1
+let g:local_history_mappings = {
+            \ "move_older": ["j"],
+            \ "move_newer": ["k"],
+            \ "move_oldest": ["G"],
+            \ "move_newest": ["gg"],
+            \ "revert": ["<cr>"],
+            \ "diff": ["d"],
+            \ "delete": ["D"],
+            \ "quit": ["q", "Q"],
+            \ }
+
+
+nnoremap ZZ :wa<cr>:qa<cr>
